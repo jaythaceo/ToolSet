@@ -1,5 +1,8 @@
+from bs4 import BeautifulSoup
+import urllib2
 
-numbers = [1, 4, 64, 74, 94]
-length = len(numbers)
-average = sum(numbers) / length
-print average
+target = urllib2.urlopen("http://www.courts.state.ny.us/reporter/3dseries/2015/2015_04674.htm").read()
+soup = BeautifulSoup(target)
+#print type(soup)
+
+print soup.prettify()
