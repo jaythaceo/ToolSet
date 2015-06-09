@@ -10,4 +10,4 @@ def fetch_data():
   files.write(data)
   files.close()
 
-
+fetch_data()
