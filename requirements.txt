@@ -4,3 +4,4 @@ html5lib
 scipy
 matplotlib
 pandas
+mechanize
