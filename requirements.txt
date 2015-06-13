@@ -6,3 +6,4 @@ matplotlib
 pandas
 mechanize
 scrapy
+service_identity
