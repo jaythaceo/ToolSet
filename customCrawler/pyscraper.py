@@ -42,3 +42,10 @@ def get_files(html, url, exten):
       if absurl[-len(exten) :]== exten:
         file_urls.append(absurl)
   return file_urls
+
+def get_email(html):
+  """ search for emails using regex expressions """
+  emails = []
+  for mail in re.findall(r"[A-Za-z0-9._]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}",html):
+    emails.append(mail)
+  return emails
