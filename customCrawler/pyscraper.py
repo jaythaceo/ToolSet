@@ -31,3 +31,14 @@ def get_links_domain(html, url):
         urls.append(newurl)
   return urls
 
+def get_files(html, url, exten):
+  """ Search for emails using regex expressions"""
+  file_urls = []
+  if exten[0] != '.':
+    exten = '.' + exten
+  for link in BeautifulSoup(html, parseOnlyThese = SoupStrainer('a')):
+    if link.has_key('href'):
+      absurl = urljoin(url, link['href'])
+      if absurl[-len(exten) :]== exten:
+        file_urls.append(absurl)
+  return file_urls
