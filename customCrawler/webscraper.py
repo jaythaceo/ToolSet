@@ -17,11 +17,11 @@ url.append(args.url)
 depth = args.depth
 #filetype=args.filetype
 
-urls_visted = ['']
+urls_visted = ['http://cohenbanking.com/']
 emails = []
 scrapingtype = args.scrapingtype
 
-levels = [urls, [], [], [], []]
+levels = [url, [], [], [], []]
 
 def writetofile():
   f = open('depth1.txt', 'w')
@@ -57,7 +57,7 @@ def writetofile():
   f.close()
 
 if scrapingtype == 'diff':
-  for i in range(depth:
+  for i in range(depth):
     print 'reached depth ', i
     for link in levels[i]:
       if link in urls_visted:
@@ -83,4 +83,4 @@ if scrapingtype == 'diff':
     levels[i + 1] = list(set(levels[i + 1]))
 
 
-writetofiles()
+writetofile()
