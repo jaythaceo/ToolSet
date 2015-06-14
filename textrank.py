@@ -36,6 +36,7 @@ def unique_everseen(iterable, key=None):
         yield element
 
 def lDistance():
+  """ Finding Levenshtein distance between two words """
   if len(firstString) > len(secondString):
     firstString, secondString = secondString, firstString
   distances = range(len(firstString) +1)
