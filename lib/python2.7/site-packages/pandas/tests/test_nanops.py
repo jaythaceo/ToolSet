@@ -4,8 +4,8 @@ from __future__ import division, print_function
 from functools import partial
 
 import numpy as np
-
-from pandas.core.common import isnull
+from pandas import Series
+from pandas.core.common import isnull, is_integer_dtype
 import pandas.core.nanops as nanops
 import pandas.util.testing as tm
 
@@ -322,6 +322,41 @@ class TestnanopsDataFrame(tm.TestCase):
         self.check_funs(nanops.nanmean, np.mean,
                         allow_complex=False, allow_obj=False,
                         allow_str=False, allow_date=False, allow_tdelta=True)
+
+    def test_nanmean_overflow(self):
+        # GH 10155
+        # In the previous implementation mean can overflow for int dtypes, it
+        # is now consistent with numpy
+
+        # numpy < 1.9.0 is not computing this correctly
+        from distutils.version import LooseVersion
+        if LooseVersion(np.__version__) >= '1.9.0':
+            for a in [2 ** 55, -2 ** 55, 20150515061816532]:
+                s = Series(a, index=range(500), dtype=np.int64)
+                result = s.mean()
+                np_result = s.values.mean()
+                self.assertEqual(result, a)
+                self.assertEqual(result, np_result)
+                self.assertTrue(result.dtype == np.float64)
+
+    def test_returned_dtype(self):
+
+        dtypes = [np.int16, np.int32, np.int64, np.float32, np.float64]
+        if hasattr(np,'float128'):
+            dtypes.append(np.float128)
+
+        for dtype in dtypes:
+            s = Series(range(10), dtype=dtype)
+            group_a = ['mean', 'std', 'var', 'skew', 'kurt']
+            group_b = ['min', 'max']
+            for method in group_a + group_b:
+                result = getattr(s, method)()
+                if is_integer_dtype(dtype) and method in group_a:
+                    self.assertTrue(result.dtype == np.float64,
+                                    "return dtype expected from %s is np.float64, got %s instead" % (method, result.dtype))
+                else:
+                    self.assertTrue(result.dtype == dtype,
+                                    "return dtype expected from %s is %s, got %s instead" % (method, dtype, result.dtype))
 
     def test_nanmedian(self):
         self.check_funs(nanops.nanmedian, np.median,

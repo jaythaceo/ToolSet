@@ -121,6 +121,9 @@ class SparseSeries(Series):
             if data is None:
                 data = []
 
+            if isinstance(data, Series) and name is None:
+                name = data.name
+
             is_sparse_array = isinstance(data, SparseArray)
             if fill_value is None:
                 if is_sparse_array:
@@ -399,7 +402,7 @@ class SparseSeries(Series):
         res_sp_values = np.abs(self.sp_values)
         return self._constructor(res_sp_values, index=self.index,
                                  sparse_index=self.sp_index,
-                                 fill_value=self.fill_value)
+                                 fill_value=self.fill_value).__finalize__(self)
 
     def get(self, label, default=None):
         """
@@ -667,6 +670,8 @@ class SparseSeries(Series):
         row_levels and column_levels are the names (labels) or numbers of the levels.
         {row_levels, column_levels} must be a partition of the MultiIndex level names (or numbers).
 
+        .. versionadded:: 0.16.0
+
         Parameters
         ----------
         row_levels : tuple/list
@@ -715,6 +720,8 @@ class SparseSeries(Series):
     def from_coo(cls, A, dense_index=False):
         """
         Create a SparseSeries from a scipy.sparse.coo_matrix.
+
+        .. versionadded:: 0.16.0
 
         Parameters
         ----------

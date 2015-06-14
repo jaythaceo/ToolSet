@@ -5,5 +5,5 @@ scipy
 matplotlib
 pandas
 mechanize
-scrapy
-service_identity
+networkx
+nltk
