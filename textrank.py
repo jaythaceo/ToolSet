@@ -50,8 +50,19 @@ def lDistance():
     distances = newDistances
   return distances[-1]
 
-def buildGraph():
-  return
+def buildGraph(nodes):
+  """ nodes - list of hashtables that represent nodes of a graph """
+  gr = nx.Graph()
+  gr.add_nodes_from(nodes)
+  nodePairs = list(itertools.combinations(nodes, 2))
+
+  # Add edges to the graph
+  for pair in nodePairs:
+    firstString = pair[0]
+    secondString = pair[1]
+    levDidtance = lDistance(firstString, secondString)
+    gr.add_edge(firstString, secondString, weight= levDidtance)
+  return gr
 
 def extractKeyPhrases():
   return
