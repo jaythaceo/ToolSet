@@ -8,8 +8,7 @@ import nltk
 We are going to do the fucking impossible
 with case law.
 
-This text ranking program, will use special
-machine learning algorithms.
+This text ranking program, will be special.
 
 """
 # Apply syntactic filters
